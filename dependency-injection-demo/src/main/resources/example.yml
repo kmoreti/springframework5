@@ -1,0 +1,36 @@
+# this is a comment
+
+name: Kleber
+
+names: # comment
+    - Kleber
+    - Juliana
+    - Vera
+
+pound_sign: "#"
+
+book:
+    author: Joe Buck
+    publisher: random house
+
+truth: yes
+
+another_truth: True
+
+more_true: true
+
+false: no # no No False false
+
+string_value: "This is it's quote"
+
+colon_string: "my courses: one two three"
+
+include_new_lines: |
+    asdf assd asss
+    dsdfsdf sdfsdf sdfsd
+    sdsd sdfsdgsd sdfsd
+
+ignore_new_lines: >
+    this is
+    just one long
+    string

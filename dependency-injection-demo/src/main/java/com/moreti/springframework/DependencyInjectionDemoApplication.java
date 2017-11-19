@@ -1,6 +1,7 @@
 package com.moreti.springframework;
 
 import com.moreti.springframework.beans.FakeDataSource;
+import com.moreti.springframework.beans.FakeJmsBroker;
 import com.moreti.springframework.controllers.ConstructorInjectedController;
 import com.moreti.springframework.controllers.GetterInjectedController;
 import com.moreti.springframework.controllers.MyController;
@@ -21,8 +22,10 @@ public class DependencyInjectionDemoApplication {
         System.out.println(ctx.getBean(GetterInjectedController.class).sayHello());
         System.out.println(ctx.getBean(ConstructorInjectedController.class).sayHello());
 
-        System.out.println(ctx.getBean(FakeDataSource.class).getUser());
-        System.out.println(ctx.getBean(FakeDataSource.class).getPassword());
-        System.out.println(ctx.getBean(FakeDataSource.class).getUrl());
+        FakeDataSource fakeDataSource = ctx.getBean(FakeDataSource.class);
+        System.out.println(fakeDataSource);
+
+        FakeJmsBroker fakeJmsBroker = ctx.getBean(FakeJmsBroker.class);
+        System.out.println(fakeJmsBroker);
     }
 }

@@ -1,0 +1,14 @@
+moreti:
+    jms:
+        username: JMS Username YML
+        password: some pass YML
+        url: some URL YML
+
+---
+
+spring:
+  profiles: de
+
+moreti:
+    jms:
+        username: JMS Username YML $$$ German
