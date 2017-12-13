@@ -1,5 +1,6 @@
 package moreti.springframework.spring5recipeapp.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import moreti.springframework.spring5recipeapp.domain.Category;
 import moreti.springframework.spring5recipeapp.domain.UnitOfMeasure;
 import moreti.springframework.spring5recipeapp.repository.CategoryRepository;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -22,6 +24,7 @@ public class IndexController {
 
     @RequestMapping({"", "/", "/index"})
     public String getIndexPage (Model model) {
+        log.debug("Getting index page");
         model.addAttribute("recipes", recipeService.getRecipes());
         return "index";
     }

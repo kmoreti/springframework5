@@ -1,5 +1,6 @@
 package moreti.springframework.spring5recipeapp.bootstrap;
 
+import lombok.extern.slf4j.Slf4j;
 import moreti.springframework.spring5recipeapp.domain.*;
 import moreti.springframework.spring5recipeapp.repository.CategoryRepository;
 import moreti.springframework.spring5recipeapp.repository.RecipeRepository;
@@ -8,11 +9,13 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -20,15 +23,16 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final UnitOfMeasureRepository unitOfMeasureRepository;
     private final RecipeRepository recipeRepository;
 
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        recipeRepository.saveAll(getRecipes());
+        log.debug("Loading bootstrap data");
+    }
+
     public RecipeBootstrap(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository, RecipeRepository recipeRepository) {
         this.categoryRepository = categoryRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.recipeRepository = recipeRepository;
-    }
-
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        recipeRepository.saveAll(getRecipes());
     }
 
     private List<Recipe> getRecipes() {
