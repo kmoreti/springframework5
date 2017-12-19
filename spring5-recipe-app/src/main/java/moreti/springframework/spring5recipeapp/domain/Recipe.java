@@ -56,4 +56,8 @@ public class Recipe {
         this.categories.add(category);
         return this;
     }
+
+    public Notes getNotes() {
+        return notes;
+    }
 }
