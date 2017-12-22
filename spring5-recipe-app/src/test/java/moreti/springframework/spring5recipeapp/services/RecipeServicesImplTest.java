@@ -1,5 +1,7 @@
 package moreti.springframework.spring5recipeapp.services;
 
+import moreti.springframework.spring5recipeapp.converters.RecipeCommandToRecipe;
+import moreti.springframework.spring5recipeapp.converters.RecipeToRecipeCommand;
 import moreti.springframework.spring5recipeapp.domain.Recipe;
 import moreti.springframework.spring5recipeapp.repository.RecipeRepository;
 import org.junit.Before;
@@ -22,11 +24,17 @@ public class RecipeServicesImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
