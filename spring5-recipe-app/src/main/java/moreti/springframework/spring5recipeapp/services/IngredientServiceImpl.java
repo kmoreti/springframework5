@@ -2,10 +2,14 @@ package moreti.springframework.spring5recipeapp.services;
 
 import lombok.extern.slf4j.Slf4j;
 import moreti.springframework.spring5recipeapp.commands.IngredientCommand;
+import moreti.springframework.spring5recipeapp.converters.IngredientCommandToIngredient;
 import moreti.springframework.spring5recipeapp.converters.IngredientToIngredientCommand;
+import moreti.springframework.spring5recipeapp.domain.Ingredient;
 import moreti.springframework.spring5recipeapp.domain.Recipe;
 import moreti.springframework.spring5recipeapp.repository.RecipeRepository;
+import moreti.springframework.spring5recipeapp.repository.UnitOfMeasureRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -15,10 +19,15 @@ public class IngredientServiceImpl implements IngredientService{
 
     private final IngredientToIngredientCommand ingredientToIngredientCommand;
     private final RecipeRepository recipeRepository;
+    private final UnitOfMeasureRepository unitOfMeasureRepository;
+    private final IngredientCommandToIngredient ingredientCommandToIngredient;
 
-    public IngredientServiceImpl(IngredientToIngredientCommand ingredientToIngredientCommand, RecipeRepository recipeRepository) {
+    public IngredientServiceImpl(IngredientToIngredientCommand ingredientToIngredientCommand, RecipeRepository recipeRepository,
+    UnitOfMeasureRepository unitOfMeasureRepository, IngredientCommandToIngredient ingredientCommandToIngredient) {
         this.ingredientToIngredientCommand = ingredientToIngredientCommand;
         this.recipeRepository = recipeRepository;
+        this.unitOfMeasureRepository = unitOfMeasureRepository;
+        this.ingredientCommandToIngredient = ingredientCommandToIngredient;
     }
 
     @Override
@@ -42,5 +51,41 @@ public class IngredientServiceImpl implements IngredientService{
         }
 
         return ingredientCommandOptional.get();
+    }
+
+    @Override
+    @Transactional
+    public IngredientCommand saveIngredientCommand(IngredientCommand ingredientCommand) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(ingredientCommand.getRecipeId());
+
+        if(!recipeOptional.isPresent()) {
+            //todo toss error if not found
+            log.error("Recipe not found for Id: " + ingredientCommand.getRecipeId());
+            return new IngredientCommand();
+        } else {
+            Recipe recipe = recipeOptional.get();
+
+            Optional<Ingredient> ingredientOptional = recipe.getIngredients()
+                    .stream()
+                    .filter(ingredient -> ingredient.getId().equals(ingredientCommand.getId()))
+                    .findFirst();
+            if (ingredientOptional.isPresent()) {
+                Ingredient ingredientFound = ingredientOptional.get();
+                ingredientFound.setDescription(ingredientCommand.getDescription());
+                ingredientFound.setAmount(ingredientCommand.getAmount());
+                ingredientFound.setUom(unitOfMeasureRepository.findById(ingredientCommand.getUom()
+                        .getId()).orElseThrow(() -> new RuntimeException("UOM NOT FOUND"))); //todo address this
+            } else {
+                recipe.addIngredient(ingredientCommandToIngredient.convert(ingredientCommand));
+            }
+
+            Recipe savedRecipe = recipeRepository.save(recipe);
+
+            //todo check for fail
+            return ingredientToIngredientCommand.convert(savedRecipe.getIngredients().stream()
+                    .filter(ingredient -> ingredient.getId().equals(ingredientCommand.getId()))
+                    .findFirst()
+                    .get());
+        }
     }
 }

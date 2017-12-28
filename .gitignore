@@ -158,3 +158,9 @@
 /spring5-recipe-app/target/classes/moreti/springframework/spring5recipeapp/services/IngredientServiceImpl.class
 /spring5-recipe-app/target/classes/templates/recipe/ingredient/show.html
 /spring5-recipe-app/target/test-classes/moreti/springframework/spring5recipeapp/services/IngredientServiceImplTest.class
+/spring5-recipe-app/.idea/codeStyles/codeStyleConfig.xml
+/spring5-recipe-app/target/classes/moreti/springframework/spring5recipeapp/services/Solution.class
+/spring5-recipe-app/target/classes/moreti/springframework/spring5recipeapp/services/UnitOfMeasureService.class
+/spring5-recipe-app/target/classes/moreti/springframework/spring5recipeapp/services/UnitOfMeasureServiceImpl.class
+/spring5-recipe-app/target/classes/templates/recipe/ingredient/ingredientform.html
+/spring5-recipe-app/target/test-classes/moreti/springframework/spring5recipeapp/services/UnitOfMeasureServiceImplTest.class

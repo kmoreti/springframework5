@@ -3,6 +3,7 @@ package moreti.springframework.spring5recipeapp.services;
 import moreti.springframework.spring5recipeapp.commands.RecipeCommand;
 import moreti.springframework.spring5recipeapp.converters.RecipeCommandToRecipe;
 import moreti.springframework.spring5recipeapp.converters.RecipeToRecipeCommand;
+import moreti.springframework.spring5recipeapp.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import moreti.springframework.spring5recipeapp.domain.Recipe;
 import moreti.springframework.spring5recipeapp.repository.RecipeRepository;
 import org.junit.Test;
@@ -27,10 +28,13 @@ public class RecipeServiceIT {
     RecipeRepository recipeRepository;
 
     @Autowired
-    RecipeCommandToRecipe recipeCommandToRecipe;
+    UnitOfMeasureServiceImpl unitOfMeasureService;
 
     @Autowired
     RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Autowired
+    UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand;
 
     @Transactional
     @Test
