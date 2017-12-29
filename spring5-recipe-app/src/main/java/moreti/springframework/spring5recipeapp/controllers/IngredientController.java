@@ -2,6 +2,8 @@ package moreti.springframework.spring5recipeapp.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import moreti.springframework.spring5recipeapp.commands.IngredientCommand;
+import moreti.springframework.spring5recipeapp.commands.RecipeCommand;
+import moreti.springframework.spring5recipeapp.commands.UnitOfMeasureCommand;
 import moreti.springframework.spring5recipeapp.services.IngredientService;
 import moreti.springframework.spring5recipeapp.services.RecipeService;
 import moreti.springframework.spring5recipeapp.services.UnitOfMeasureService;
@@ -41,6 +43,26 @@ public class IngredientController {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId),Long.valueOf(id)));
 
         return "recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/new")
+    public String newRecipe(@PathVariable String recipeId, Model model) {
+        //make sure we have a good id value
+        RecipeCommand command = recipeService.findCommandById(Long.valueOf(recipeId));
+        //todo raise an exception if null
+
+        //need to return back parent id for hidden form property
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        model.addAttribute("ingredient", ingredientCommand);
+
+        //init uom
+        ingredientCommand.setUom(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+
+        return "recipe/ingredient/ingredientform";
     }
 
     @GetMapping
