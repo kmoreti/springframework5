@@ -8,6 +8,7 @@ import moreti.springframework.spring5recipeapp.services.IngredientService;
 import moreti.springframework.spring5recipeapp.services.RecipeService;
 import moreti.springframework.spring5recipeapp.services.UnitOfMeasureService;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,6 +87,17 @@ public class IngredientController {
         log.debug("Saved Ingredient Id: " + savedIngredientCommand.getId());
 
         return "redirect:/recipe/" + savedIngredientCommand.getRecipeId() + "/ingredient/" + savedIngredientCommand.getId() + "/show";
+    }
+
+    @Transactional
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/{id}/delete")
+    public String deleteIngredient(@PathVariable String recipeId,
+                                   @PathVariable String id){
+        log.debug("Deleting ingredient id: " + id);
+        ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(id));
+
+        return "redirect:/recipe/" + recipeId +"/ingredients";
     }
 
 }
