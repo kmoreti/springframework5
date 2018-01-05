@@ -2,6 +2,7 @@ package moreti.springframework.spring5recipeapp.controllers;
 
 import moreti.springframework.spring5recipeapp.commands.RecipeCommand;
 import moreti.springframework.spring5recipeapp.domain.Recipe;
+import moreti.springframework.spring5recipeapp.exceptions.NotFoundException;
 import moreti.springframework.spring5recipeapp.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,5 +100,16 @@ public class RecipeControllerTest {
                 .andExpect(view().name("redirect:/"));
 
         verify(recipeService, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    public void testGetRecipeNotFound() throws Exception {
+
+        when(recipeService.findById(anyLong())).thenThrow(new NotFoundException());
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound());
+
+
     }
 }

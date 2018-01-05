@@ -1,8 +1,10 @@
 package moreti.springframework.spring5recipeapp.services;
 
+import moreti.springframework.spring5recipeapp.commands.RecipeCommand;
 import moreti.springframework.spring5recipeapp.converters.RecipeCommandToRecipe;
 import moreti.springframework.spring5recipeapp.converters.RecipeToRecipeCommand;
 import moreti.springframework.spring5recipeapp.domain.Recipe;
+import moreti.springframework.spring5recipeapp.exceptions.NotFoundException;
 import moreti.springframework.spring5recipeapp.repository.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,6 +79,18 @@ public class RecipeServicesImplTest {
         recipeService.deleteById(idToDelete);
 
         verify(recipeRepository,times(1)).deleteById(anyLong());
+
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getRecipeByIdTestNotFound() throws Exception {
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Recipe recipeReturned = recipeService.findById(1L);
+
+        //should go boom
 
     }
 }

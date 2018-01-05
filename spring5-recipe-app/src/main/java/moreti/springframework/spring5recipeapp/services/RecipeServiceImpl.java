@@ -5,6 +5,7 @@ import moreti.springframework.spring5recipeapp.commands.RecipeCommand;
 import moreti.springframework.spring5recipeapp.converters.RecipeCommandToRecipe;
 import moreti.springframework.spring5recipeapp.converters.RecipeToRecipeCommand;
 import moreti.springframework.spring5recipeapp.domain.Recipe;
+import moreti.springframework.spring5recipeapp.exceptions.NotFoundException;
 import moreti.springframework.spring5recipeapp.repository.RecipeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +42,8 @@ public class RecipeServiceImpl implements RecipeService {
         Optional<Recipe> recipeOptional = recipeRepository.findById(l);
 
         if (!recipeOptional.isPresent()) {
-            throw new RuntimeException("Recipe Not Found!");
+            //throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Recipe Not Found!");
         }
 
         return recipeOptional.get();
