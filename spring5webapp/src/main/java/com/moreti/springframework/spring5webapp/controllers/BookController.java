@@ -4,12 +4,11 @@ import com.moreti.springframework.spring5webapp.repository.BookRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class BookController {
 
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     public BookController(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
@@ -17,7 +16,7 @@ public class BookController {
 
     @RequestMapping("/books")
     public String getBooks(Model model) {
-        model.addAttribute("books",bookRepository.findAll());
-        return "books";
+        model.addAttribute("books", bookRepository.findAll());
+        return "books/list";
     }
 }

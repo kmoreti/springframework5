@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
-    private AuthorRepository authorRepository;
-    private BookRepository bookRepository;
-    private PublisherRepository publisherRepository;
+    private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
+    private final PublisherRepository publisherRepository;
 
     public DevBootstrap(AuthorRepository authorRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
         this.authorRepository = authorRepository;
